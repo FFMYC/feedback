@@ -1,73 +1,74 @@
-ï»¿# åé¦ˆç³»ç»Ÿ
+# ·´À¡ÏµÍ³
 
-ä¸€ä¸ªåŸºäºŽNode.jså’ŒExpressçš„è½»é‡çº§åé¦ˆæ”¶é›†ç³»ç»Ÿï¼Œæ”¯æŒè‡ªå®šä¹‰æ ‡ç­¾ã€è‡ªåŠ¨æ–‡ä»¶å‘½åç­‰åŠŸèƒ½ã€‚
+Ò»¸ö»ùÓÚNode.jsºÍExpressµÄÇáÁ¿¼¶·´À¡ÊÕ¼¯ÏµÍ³£¬Ö§³Ö×Ô¶¨Òå±êÇ©¡¢×Ô¶¯ÎÄ¼þÃüÃûµÈ¹¦ÄÜ¡£
 
-## åŠŸèƒ½ç‰¹æ€§
+## ¹¦ÄÜÌØÐÔ
 
-- æ ‡ç­¾ç®¡ç†ï¼šåˆ›å»ºã€åˆ é™¤åé¦ˆæ ‡ç­¾
-- è‡ªå®šä¹‰æ ‡ç­¾ï¼šé€‰æ‹©"å…¶ä»–"æ—¶å¯è‡ªå®šä¹‰æ ‡ç­¾åç§°
-- è‡ªåŠ¨å‘½åï¼šæ–‡ä»¶åæ ¼å¼ä¸º"æ ‡ç­¾-æ ‡é¢˜å-ç”¨æˆ·å"
-- é‡åå¤„ç†ï¼šè‡ªåŠ¨æ·»åŠ åºå·é¿å…æ–‡ä»¶åå†²çª
-- åé¦ˆæ”¶é›†ï¼šæ”¯æŒå»ºè®®ã€bugã€å…¶ä»–ç±»åž‹åé¦ˆ
+- ±êÇ©¹ÜÀí£º´´½¨¡¢É¾³ý·´À¡±êÇ©
+- ×Ô¶¨Òå±êÇ©£ºÑ¡Ôñ"ÆäËû"Ê±¿É×Ô¶¨Òå±êÇ©Ãû³Æ
+- ×Ô¶¯ÃüÃû£ºÎÄ¼þÃû¸ñÊ½Îª"±êÇ©-±êÌâÃû-ÓÃ»§Ãû"
+- ÖØÃû´¦Àí£º×Ô¶¯Ìí¼ÓÐòºÅ±ÜÃâÎÄ¼þÃû³åÍ»
+- ·´À¡ÊÕ¼¯£ºÖ§³Ö½¨Òé¡¢bug¡¢ÆäËûÀàÐÍ·´À¡
 
-## æŠ€æœ¯æ ˆ
+## ¼¼ÊõÕ»
 
-- åŽç«¯ï¼šNode.js + Express
-- å‰ç«¯ï¼šåŽŸç”ŸHTML/CSS/JavaScript
-- æ•°æ®å­˜å‚¨ï¼šæœ¬åœ°æ–‡ä»¶ç³»ç»Ÿï¼ˆHTML/JSONï¼‰
+- ºó¶Ë£ºNode.js + Express
+- Ç°¶Ë£ºÔ­ÉúHTML/CSS/JavaScript
+- Êý¾Ý´æ´¢£º±¾µØÎÄ¼þÏµÍ³£¨HTML/JSON£©
 
-## å®‰è£…è¿è¡Œ
+## °²×°ÔËÐÐ
 
 `ash
-# å®‰è£…ä¾èµ–
+# °²×°ÒÀÀµ
 npm install
 
-# å¯åŠ¨æœåŠ¡å™¨
+# Æô¶¯·þÎñÆ÷
 node server.js
 `
 
-è®¿é—®åœ°å€ï¼šhttp://localhost:80
+·ÃÎÊµØÖ·£ºhttp://localhost:7890
 
-å¦‚éœ€ä¿®æ”¹ç«¯å£ï¼Œè¯·ç¼–è¾‘ server.js æ–‡ä»¶ä¸­çš„ port å˜é‡ã€‚
+ÈçÐèÐÞ¸Ä¶Ë¿Ú£¬Çë±à¼­ server.js ÎÄ¼þÖÐµÄ port ±äÁ¿¡£
 
-## é»˜è®¤æ ‡ç­¾
+## Ä¬ÈÏ±êÇ©
 
-- å»ºè®®ï¼šåŠŸèƒ½å»ºè®®å’Œæ”¹è¿›
-- bugï¼šé—®é¢˜æŠ¥å‘Šå’Œbugåé¦ˆ
-- å…¶ä»–ï¼šå…¶ä»–ç±»åž‹çš„åé¦ˆï¼ˆå¯è‡ªå®šä¹‰ï¼‰
+- ½¨Òé£º¹¦ÄÜ½¨ÒéºÍ¸Ä½ø
+- bug£ºÎÊÌâ±¨¸æºÍbug·´À¡
+- ÆäËû£ºÆäËûÀàÐÍµÄ·´À¡£¨¿É×Ô¶¨Òå£©
 
-## æ–‡ä»¶åæ ¼å¼
+## ÎÄ¼þÃû¸ñÊ½
 
-- æ ¼å¼ï¼šæ ‡ç­¾-æ ‡é¢˜å-ç”¨æˆ·å
-- ç¤ºä¾‹ï¼šbug-æ— æ³•ç™»å½•-å¼ ä¸‰.html
-- é‡åï¼šbug-æ— æ³•ç™»å½•-å¼ ä¸‰-1.html
+- ¸ñÊ½£º±êÇ©-±êÌâÃû-ÓÃ»§Ãû
+- Ê¾Àý£ºbug-ÎÞ·¨µÇÂ¼-ÕÅÈý.html
+- ÖØÃû£ºbug-ÎÞ·¨µÇÂ¼-ÕÅÈý-1.html
 
-## APIæŽ¥å£
+## API½Ó¿Ú
 
-- POST /api/save-feedback-tag - ä¿å­˜åé¦ˆæ ‡ç­¾
-- POST /api/check-feedback-duplicate - æ£€æŸ¥æ–‡ä»¶åé‡å¤
-- POST /save-ticket - ä¿å­˜åé¦ˆ
+- POST /api/save-feedback-tag - ±£´æ·´À¡±êÇ©
+- POST /api/check-feedback-duplicate - ¼ì²éÎÄ¼þÃûÖØ¸´
+- POST /save-ticket - ±£´æ·´À¡
 
-## é¡¹ç›®ç»“æž„
+## ÏîÄ¿½á¹¹
 
-- server.js - æœåŠ¡å™¨ä¸»æ–‡ä»¶
-- package.json - é¡¹ç›®é…ç½®
-- README.md - é¡¹ç›®è¯´æ˜Ž
-- .gitignore - Gitå¿½ç•¥æ–‡ä»¶
-- icon.png - ç½‘ç«™å›¾æ ‡
-- è”ç³»/ - åé¦ˆæ•°æ®ç›®å½•
-  - åé¦ˆ.html - åé¦ˆè¡¨å•é¡µé¢
-  - æ ‡ç­¾ç®¡ç†.html - æ ‡ç­¾ç®¡ç†é¡µé¢
-  - main.html - è”ç³»ä¸»é¡µ
-  - æ ‡ç­¾/ - æ ‡ç­¾æ•°æ®
-  - åé¦ˆ/ - åé¦ˆæ–‡ä»¶å­˜å‚¨
+- server.js - ·þÎñÆ÷Ö÷ÎÄ¼þ
+- package.json - ÏîÄ¿ÅäÖÃ
+- README.md - ÏîÄ¿ËµÃ÷
+- .gitignore - GitºöÂÔÎÄ¼þ
+- icon.png - ÍøÕ¾Í¼±ê
+- ÁªÏµ/ - ·´À¡Êý¾ÝÄ¿Â¼
+  - ·´À¡.html - ·´À¡±íµ¥Ò³Ãæ
+  - ±êÇ©¹ÜÀí.html - ±êÇ©¹ÜÀíÒ³Ãæ
+  - main.html - ÁªÏµÖ÷Ò³
+  - ±êÇ©/ - ±êÇ©Êý¾Ý
+  - ·´À¡/ - ·´À¡ÎÄ¼þ´æ´¢
 
-## è®¸å¯è¯
+## Ðí¿ÉÖ¤
 
 MIT License
 
-æœ¬é¡¹ç›®é‡‡ç”¨MITè®¸å¯è¯ï¼Œå…è®¸è‡ªç”±ä½¿ç”¨ã€ä¿®æ”¹å’Œåˆ†å‘ã€‚
+±¾ÏîÄ¿²ÉÓÃMITÐí¿ÉÖ¤£¬ÔÊÐí×ÔÓÉÊ¹ÓÃ¡¢ÐÞ¸ÄºÍ·Ö·¢¡£
 
-## é¡¹ç›®åœ°å€
+## ÏîÄ¿µØÖ·
 
 GitHub: https://github.com/FFMYC/feedback
+

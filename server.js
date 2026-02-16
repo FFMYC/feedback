@@ -1,10 +1,10 @@
-ï»¿const express = require('express');
+const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const port = 80;
+const port = 7890;
 
-// CORSä¸­é—´ä»¶
+// CORSÖÐ¼ä¼þ
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -16,15 +16,15 @@ app.use((req, res, next) => {
     }
 });
 
-// é™æ€æ–‡ä»¶æœåŠ¡
+// ¾²Ì¬ÎÄ¼þ·þÎñ
 app.use(express.static(__dirname));
 app.use(express.json());
 
-// ä¿å­˜åé¦ˆæ ‡ç­¾
+// ±£´æ·´À¡±êÇ©
 app.post('/api/save-feedback-tag', (req, res) => {
     try {
         const { tags } = req.body;
-        const tagsDir = path.join(__dirname, 'è”ç³»', 'æ ‡ç­¾');
+        const tagsDir = path.join(__dirname, 'ÁªÏµ', '±êÇ©');
         
         if (!fs.existsSync(tagsDir)) {
             fs.mkdirSync(tagsDir, { recursive: true });
@@ -33,18 +33,18 @@ app.post('/api/save-feedback-tag', (req, res) => {
         const metadataPath = path.join(tagsDir, 'metadata.json');
         fs.writeFileSync(metadataPath, JSON.stringify({ tags: tags }, null, 2), 'utf8');
         
-        res.json({ success: true, message: 'æ ‡ç­¾ä¿å­˜æˆåŠŸ' });
+        res.json({ success: true, message: '±êÇ©±£´æ³É¹¦' });
     } catch (error) {
-        console.error('ä¿å­˜åé¦ˆæ ‡ç­¾å¤±è´¥:', error);
-        res.status(500).json({ success: false, message: 'ä¿å­˜å¤±è´¥ï¼Œè¯·é‡è¯•' });
+        console.error('±£´æ·´À¡±êÇ©Ê§°Ü:', error);
+        res.status(500).json({ success: false, message: '±£´æÊ§°Ü£¬ÇëÖØÊÔ' });
     }
 });
 
-// æ£€æŸ¥åé¦ˆé‡å
+// ¼ì²é·´À¡ÖØÃû
 app.post('/api/check-feedback-duplicate', (req, res) => {
     try {
         const { baseTitle } = req.body;
-        const feedbackDir = path.join(__dirname, 'è”ç³»', 'åé¦ˆ');
+        const feedbackDir = path.join(__dirname, 'ÁªÏµ', '·´À¡');
         
         if (!fs.existsSync(feedbackDir)) {
             res.json({ exists: false });
@@ -64,16 +64,16 @@ app.post('/api/check-feedback-duplicate', (req, res) => {
             res.json({ exists: false });
         }
     } catch (error) {
-        console.error('æ£€æŸ¥é‡åå¤±è´¥:', error);
-        res.status(500).json({ success: false, message: 'æ£€æŸ¥å¤±è´¥ï¼Œè¯·é‡è¯•' });
+        console.error('¼ì²éÖØÃûÊ§°Ü:', error);
+        res.status(500).json({ success: false, message: '¼ì²éÊ§°Ü£¬ÇëÖØÊÔ' });
     }
 });
 
-// ä¿å­˜åé¦ˆ
+// ±£´æ·´À¡
 app.post('/save-ticket', (req, res) => {
     try {
         const { title, fileName, tag, publisher, content } = req.body;
-        const saveDir = path.join(__dirname, 'è”ç³»', 'åé¦ˆ');
+        const saveDir = path.join(__dirname, 'ÁªÏµ', '·´À¡');
         
         if (!fs.existsSync(saveDir)) {
             fs.mkdirSync(saveDir, { recursive: true });
@@ -104,30 +104,31 @@ app.post('/save-ticket', (req, res) => {
         <div class="header">
             <h1></h1>
         </div>
-        <div class="info-item"><span class="info-label">æ ‡ç­¾ï¼š</span></div>
-        <div class="info-item"><span class="info-label">æäº¤æ—¶é—´ï¼š</span></div>
-        <div class="info-item"><span class="info-label">æäº¤äººï¼š</span></div>
+        <div class="info-item"><span class="info-label">±êÇ©£º</span></div>
+        <div class="info-item"><span class="info-label">Ìá½»Ê±¼ä£º</span></div>
+        <div class="info-item"><span class="info-label">Ìá½»ÈË£º</span></div>
         <div class="content"></div>
     </div>
 </body>
 </html>;
         
         fs.writeFileSync(filePath, fileContent, 'utf8');
-        res.json({ success: true, message: 'åé¦ˆä¿å­˜æˆåŠŸ', filePath: /è”ç³»/åé¦ˆ/ });
+        res.json({ success: true, message: '·´À¡±£´æ³É¹¦', filePath: /ÁªÏµ/·´À¡/ });
     } catch (error) {
-        console.error('åé¦ˆä¿å­˜å¤±è´¥:', error);
-        res.status(500).json({ success: false, message: 'ä¿å­˜å¤±è´¥ï¼Œè¯·é‡è¯•' });
+        console.error('·´À¡±£´æÊ§°Ü:', error);
+        res.status(500).json({ success: false, message: '±£´æÊ§°Ü£¬ÇëÖØÊÔ' });
     }
 });
 
-// æ ¹è·¯å¾„
+// ¸ùÂ·¾¶
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'è”ç³»/åé¦ˆ.html'));
+    res.sendFile(path.join(__dirname, 'ÁªÏµ/·´À¡.html'));
 });
 
-// å¯åŠ¨æœåŠ¡å™¨
+// Æô¶¯·þÎñÆ÷
 app.listen(port, '0.0.0.0', () => {
-    console.log('åé¦ˆç³»ç»ŸæœåŠ¡å™¨å¯åŠ¨æˆåŠŸ!');
-    console.log('æœ¬åœ°è®¿é—®: http://localhost:' + port);
-    console.log('æœåŠ¡ç›®å½•: ' + __dirname);
+    console.log('·´À¡ÏµÍ³·þÎñÆ÷Æô¶¯³É¹¦!');
+    console.log('±¾µØ·ÃÎÊ: http://localhost:' + port);
+    console.log('·þÎñÄ¿Â¼: ' + __dirname);
 });
+
