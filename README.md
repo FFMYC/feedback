@@ -18,15 +18,17 @@
 
 ## 安装运行
 
-\\\ash
+`ash
 # 安装依赖
 npm install
 
 # 启动服务器
 node server.js
-\\\
+`
 
-访问地址：http://localhost
+访问地址：http://localhost:80
+
+如需修改端口，请编辑 server.js 文件中的 port 变量。
 
 ## 默认标签
 
@@ -48,21 +50,24 @@ node server.js
 
 ## 项目结构
 
-\\\
-feedback-system/
-├── server.js          # 服务器主文件
-├── package.json       # 项目配置
-├── README.md          # 项目说明
-├── .gitignore         # Git忽略文件
-├── icon.png           # 网站图标
-└── 联系/              # 反馈数据目录
-    ├── 反馈.html        # 反馈表单页面
-    ├── 标签管理.html      # 标签管理页面
-    ├── main.html         # 联系主页
-    ├── 标签/            # 标签数据
-    └── 反馈/            # 反馈文件存储
-\\\
+- server.js - 服务器主文件
+- package.json - 项目配置
+- README.md - 项目说明
+- .gitignore - Git忽略文件
+- icon.png - 网站图标
+- 联系/ - 反馈数据目录
+  - 反馈.html - 反馈表单页面
+  - 标签管理.html - 标签管理页面
+  - main.html - 联系主页
+  - 标签/ - 标签数据
+  - 反馈/ - 反馈文件存储
 
 ## 许可证
 
 MIT License
+
+本项目采用MIT许可证，允许自由使用、修改和分发。
+
+## 项目地址
+
+GitHub: https://github.com/FFMYC/feedback
