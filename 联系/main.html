@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - F_F_M_YC</title>
+    <link rel="icon" href="./icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: #f5f5f5; color: #333; line-height: 1.6; padding: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; color: #38a038; border: 2px solid #ff0000; background: white; border-radius: 5px; cursor: pointer; transition: all 0.3s; text-decoration: none; margin-bottom: 20px; }
+        .back-btn:hover { background: #0000008a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 40px; }
+        h1 { color: #2c3e50; margin-bottom: 30px; text-align: center; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .card { background: #f8f9fa; border-radius: 10px; padding: 25px; border: 2px solid #e1e4e8; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.15); border-color: #3498db; }
+        .card-icon { font-size: 48px; margin-bottom: 15px; }
+        .card-title { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+        .card-description { color: #7f8c8d; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-btn">← 返回主页</a>
+    <div class="container">
+        <h1>📞 联系我们</h1>
+        <p style="text-align: center; color: #7f8c8d; margin-bottom: 20px;">有任何问题或建议？欢迎联系我们！</p>
+        
+        <div class="card-grid">
+            <a href="反馈.html" class="card">
+                <div class="card-icon">💬</div>
+                <div class="card-title">反馈建议</div>
+                <div class="card-description">提交您的建议和反馈，帮助我们改进</div>
+            </a>
+            
+            <a href="标签管理.html" class="card">
+                <div class="card-icon">🏷️</div>
+                <div class="card-title">标签管理</div>
+                <div class="card-description">管理反馈标签，添加或删除分类</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反馈标签管理 - F_F_M_YC</title>
+    <link rel="icon" href="./icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: #f5f5f5; color: #333; line-height: 1.6; padding: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; color: #38a038; border: 2px solid #ff0000; background: white; border-radius: 5px; cursor: pointer; transition: all 0.3s; text-decoration: none; margin-bottom: 20px; }
+        .back-btn:hover { background: #0000008a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 40px; }
+        h1 { color: #2c3e50; margin-bottom: 30px; text-align: center; }
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: #2c3e50; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 12px 15px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 16px; transition: border-color 0.3s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #3498db; }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-hint { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }
+        .btn { padding: 12px 30px; border-radius: 4px; font-size: 16px; cursor: pointer; border: none; transition: background-color 0.3s; }
+        .btn-primary { background-color: #3498db; color: white; }
+        .btn-primary:hover { background-color: #2980b9; }
+        .btn-secondary { background-color: #f5f5f5; color: #333; }
+        .btn-secondary:hover { background-color: #e8e8e8; }
+        .success-info { margin-top: 20px; padding: 15px; background-color: #d4edda; border-radius: 4px; border-left: 4px solid #28a745; display: none; }
+        .success-info h3 { margin-bottom: 10px; color: #28a745; }
+        .tag-list { margin-top: 30px; }
+        .tag-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #3498db; }
+        .tag-info h4 { color: #2c3e50; margin-bottom: 5px; }
+        .tag-info p { color: #7f8c8d; font-size: 14px; }
+        .delete-btn { background-color: #dc3545; color: white; padding: 8px 16px; border-radius: 4px; cursor: pointer; border: none; font-size: 14px; }
+        .delete-btn:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+    <a href="main.html" class="back-btn">← 返回联系</a>
+    <div class="container">
+        <h1>🏷️ 反馈标签管理</h1>
+        
+        <form id="tag-form">
+            <div class="form-group">
+                <label class="form-label">标签名称 *</label>
+                <input type="text" class="form-input" id="tag-name" placeholder="请输入标签名称" required>
+                <p class="form-hint">标签名称建议 2-20 字符</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">标签说明 *</label>
+                <textarea class="form-textarea" id="tag-description" placeholder="请输入标签的说明描述" required></textarea>
+                <p class="form-hint">简要描述该标签的用途</p>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submit-btn">添加标签</button>
+            </div>
+        </form>
+        
+        <div class="success-info" id="success-info">
+            <h3>✅ 标签创建成功</h3>
+            <p id="success-message"></p>
+        </div>
+        
+        <div class="tag-list" id="tag-list">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">现有标签</h3>
+        </div>
+    </div>
+
+    <script>
+        let allTags = [];
+        
+        // 加载反馈标签列表
+        async function loadTags() {
+            try {
+                const response = await fetch('./标签/metadata.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    allTags = data.tags || [];
+                    renderTags();
+                }
+            } catch (error) {
+                console.error('加载标签失败:', error);
+            }
+        }
+        
+        // 渲染标签列表
+        function renderTags() {
+            const container = document.getElementById('tag-list');
+            const listHtml = allTags.map(tag => `
+                <div class="tag-item">
+                    <div class="tag-info">
+                        <h4>${tag.name}</h4>
+                        <p>${tag.description}</p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteTag('${tag.id}')">删除</button>
+                </div>
+            `).join('');
+            
+            container.innerHTML = `<h3 style="color: #2c3e50; margin-bottom: 20px;">现有标签 (${allTags.length})</h3>` + listHtml;
+        }
+        
+        // 添加标签
+        document.getElementById('tag-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('tag-name').value.trim();
+            const description = document.getElementById('tag-description').value.trim();
+            
+            if (!name || !description) {
+                alert('请填写所有字段');
+                return;
+            }
+            
+            const newTag = {
+                id: 'tag_' + Date.now(),
+                name: name,
+                description: description
+            };
+            
+            allTags.push(newTag);
+            
+            try {
+                const response = await fetch('/api/save-feedback-tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tags: allTags })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('success-info').style.display = 'block';
+                    document.getElementById('success-message').textContent = `标签 "${name}" 创建成功！`;
+                    document.getElementById('tag-form').reset();
+                    renderTags();
+                } else {
+                    alert('创建失败：' + result.message);
+                }
+            } catch (error) {
+                alert('网络错误，请检查连接');
+                console.error('保存标签失败:', error);
+            }
+        });
+        
+        // 删除标签
+        window.deleteTag = async function(tagId) {
+            if (!confirm('确定要删除这个标签吗？')) return;
+            
+            allTags = allTags.filter(tag => tag.id !== tagId);
+            
+            try {
+                const response = await fetch('/api/save-feedback-tag', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tags: allTags })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    renderTags();
+                } else {
+                    alert('删除失败：' + result.message);
+                }
+            } catch (error) {
+                alert('网络错误，请检查连接');
+                console.error('删除标签失败:', error);
+            }
+        }
+        
+        // 页面加载时加载标签
+        window.addEventListener('DOMContentLoaded', loadTags);
+    </script>
+</body>
+</html>

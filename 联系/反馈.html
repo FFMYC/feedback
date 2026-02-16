@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反馈建议 - F_F_M_YC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: #f5f5f5; color: #333; line-height: 1.6; padding: 20px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; color: #38a038; border: 2px solid #ff0000; background: white; border-radius: 5px; cursor: pointer; transition: all 0.3s; text-decoration: none; margin-bottom: 20px; }
+        .back-btn:hover { background: #0000008a; color: white; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 40px; }
+        h1 { color: #2c3e50; margin-bottom: 30px; text-align: center; }
+        .form-group { margin-bottom: 25px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: #2c3e50; }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 12px 15px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 16px; transition: border-color 0.3s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #3498db; }
+        .form-textarea { min-height: 150px; resize: vertical; }
+        .form-hint { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }
+        .btn { padding: 12px 30px; border-radius: 4px; font-size: 16px; cursor: pointer; border: none; transition: background-color 0.3s; }
+        .btn-primary { background-color: #3498db; color: white; }
+        .btn-primary:hover { background-color: #2980b9; }
+        .btn-secondary { background-color: #f5f5f5; color: #333; }
+        .btn-secondary:hover { background-color: #e8e8e8; }
+        .success-info { margin-top: 20px; padding: 15px; background-color: #d4edda; border-radius: 4px; border-left: 4px solid #28a745; display: none; }
+        .success-info h3 { margin-bottom: 10px; color: #28a745; }
+    </style>
+</head>
+<body>
+    <a href="main.html" class="back-btn">← 返回联系</a>
+    <div class="container">
+        <h1>💬 反馈建议</h1>
+        
+        <form id="feedback-form">
+            <div class="form-group">
+                <label class="form-label">标签 *</label>
+                <select class="form-select" id="feedback-tag" required>
+                    <option value="">请选择标签</option>
+                </select>
+                <p class="form-hint">选择"其他"可自定义标签</p>
+            </div>
+            
+            <div class="form-group" id="custom-tag-group" style="display: none;">
+                <label class="form-label">自定义标签 *</label>
+                <input type="text" class="form-input" id="custom-tag" placeholder="请输入自定义标签名称">
+                <p class="form-hint">自定义标签名称，用于分类反馈</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">标题 *</label>
+                <input type="text" class="form-input" id="feedback-title" placeholder="请输入反馈标题" required>
+                <p class="form-hint">文件名格式：标签-标题名-用户名</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">您的姓名/昵称 *</label>
+                <input type="text" class="form-input" id="feedback-name" placeholder="请输入您的姓名或昵称" required>
+                <p class="form-hint">将用于生成文件名和显示在反馈文件中</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">详细描述 *</label>
+                <textarea class="form-textarea" id="feedback-content" placeholder="请详细描述您的问题或建议..." required></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="preview-btn">预览</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">提交反馈</button>
+            </div>
+        </form>
+        
+        <div class="success-info" id="success-info">
+            <h3>✅ 提交成功</h3>
+            <p id="success-message"></p>
+        </div>
+    </div>
+
+    <script>
+        let allTags = [];
+        
+        // 加载反馈标签列表
+        async function loadTags() {
+            try {
+                const response = await fetch('./标签/metadata.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    allTags = data.tags || [];
+                    // 修改标签名称：问题 -> bug
+                    allTags.forEach(tag => {
+                        if (tag.name === '问题') {
+                            tag.name = 'bug';
+                        }
+                    });
+                    updateTagSelect();
+                } else {
+                    // 如果文件不存在，创建默认标签
+                    allTags = [
+                        { id: 'tag_1', name: '建议', description: '功能建议和改进' },
+                        { id: 'tag_2', name: 'bug', description: '问题报告和bug反馈' },
+                        { id: 'tag_3', name: '其他', description: '其他类型的反馈' }
+                    ];
+                    updateTagSelect();
+                }
+            } catch (error) {
+                console.error('加载标签失败:', error);
+                // 使用默认标签
+                allTags = [
+                    { id: 'tag_1', name: '建议', description: '功能建议和改进' },
+                    { id: 'tag_2', name: 'bug', description: '问题报告和bug反馈' },
+                    { id: 'tag_3', name: '其他', description: '其他类型的反馈' }
+                ];
+                updateTagSelect();
+            }
+        }
+        
+        // 更新标签选择下拉框
+        function updateTagSelect() {
+            const select = document.getElementById('feedback-tag');
+            select.innerHTML = '<option value="">请选择标签</option>';
+            allTags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag.name;
+                option.textContent = tag.name;
+                select.appendChild(option);
+            });
+        }
+        
+        // 监听标签变化，显示/隐藏自定义标签输入
+        document.getElementById('feedback-tag').addEventListener('change', function() {
+            const customTagGroup = document.getElementById('custom-tag-group');
+            if (this.value === '其他') {
+                customTagGroup.style.display = 'block';
+                document.getElementById('custom-tag').required = true;
+            } else {
+                customTagGroup.style.display = 'none';
+                document.getElementById('custom-tag').required = false;
+                document.getElementById('custom-tag').value = '';
+            }
+        });
+        
+        // 生成文件名：标签-标题名-用户名
+        function generateFileName() {
+            const tagSelect = document.getElementById('feedback-tag');
+            const customTag = document.getElementById('custom-tag').value.trim();
+            const title = document.getElementById('feedback-title').value.trim();
+            const name = document.getElementById('feedback-name').value.trim();
+            
+            let tagName = tagSelect.value;
+            if (tagName === '其他' && customTag) {
+                tagName = customTag;
+            }
+            
+            if (tagName && title && name) {
+                return `${tagName}-${title}-${name}`;
+            }
+            return '';
+        }
+        
+        // 检查重名并添加序号
+        async function checkDuplicateAndAddSequence(baseFileName) {
+            try {
+                const response = await fetch('/api/check-feedback-duplicate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ baseTitle: baseFileName })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.exists) {
+                        return `${baseFileName}-${result.sequence}`;
+                    }
+                }
+            } catch (error) {
+                console.error('检查重名失败:', error);
+            }
+            return baseFileName;
+        }
+        
+        document.getElementById('feedback-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const tagSelect = document.getElementById('feedback-tag').value;
+            const customTag = document.getElementById('custom-tag').value.trim();
+            const title = document.getElementById('feedback-title').value.trim();
+            const name = document.getElementById('feedback-name').value.trim();
+            const content = document.getElementById('feedback-content').value.trim();
+            
+            let tagName = tagSelect;
+            if (tagName === '其他') {
+                if (!customTag) {
+                    alert('请输入自定义标签');
+                    return;
+                }
+                tagName = customTag;
+            }
+            
+            if (!tagSelect) {
+                alert('请选择标签');
+                return;
+            }
+            
+            if (!title) {
+                alert('请输入标题');
+                return;
+            }
+            
+            if (!name) {
+                alert('请输入您的姓名/昵称');
+                return;
+            }
+            
+            // 生成文件名
+            const baseFileName = `${tagName}-${title}-${name}`;
+            
+            // 检查重名并添加序号
+            const finalFileName = await checkDuplicateAndAddSequence(baseFileName);
+            
+            const feedbackData = {
+                title: title,
+                fileName: finalFileName,
+                tag: tagName,
+                publisher: name,
+                content: content
+            };
+            
+            try {
+                const response = await fetch('/save-ticket', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('success-info').style.display = 'block';
+                    document.getElementById('success-message').textContent = `感谢您的反馈！文件已保存为：${finalFileName}`;
+                    document.getElementById('feedback-form').reset();
+                    document.getElementById('custom-tag-group').style.display = 'none';
+                } else {
+                    alert('提交失败：' + result.message);
+                }
+            } catch (error) {
+                alert('网络错误，请检查连接');
+                console.error('提交失败:', error);
+            }
+        });
+        
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            const tagSelect = document.getElementById('feedback-tag').value;
+            const customTag = document.getElementById('custom-tag').value.trim();
+            const title = document.getElementById('feedback-title').value.trim();
+            const name = document.getElementById('feedback-name').value.trim();
+            const content = document.getElementById('feedback-content').value.trim();
+            
+            let tagName = tagSelect;
+            if (tagName === '其他' && customTag) {
+                tagName = customTag;
+            }
+            
+            if (!tagSelect || !title || !name || !content) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            alert('预览功能开发中...\n\n标签: ' + tagName + '\n标题: ' + title + '\n提交人: ' + name + '\n文件名: ' + `${tagName}-${title}-${name}\n内容: ` + content.substring(0, 50) + '...');
+        });
+        
+        // 页面加载时加载标签
+        window.addEventListener('DOMContentLoaded', loadTags);
+    </script>
+</body>
+</html>
